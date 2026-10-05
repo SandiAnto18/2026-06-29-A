@@ -37,8 +37,35 @@ class Controller:
 
         self._view.update_page()
     def handleStampaInfo(self,e):
-        pass
+
+        # CLIENTE PIù INFLUENTE (INFLUENZA = PESO ARCHI USCENTI - PESO ARCHI ENTRANTI)
+        cliente, influenza = self._model.getMostInfluential()
+
+        self._view._txt_result.controls.append(
+            ft.Text(
+                f"Cliente più influente: {cliente.FirstName} {cliente.LastName} ({cliente.Country}) - (Influenza: {influenza})"
+            )
+        )
+        # RECUPERO I 5 ARCHI CON PESO MAGGIORE
+        top5 = self._model.getTop5Edges()
+
+        self._view._txt_result.controls.append(
+            ft.Text("Top 5 archi con peso maggiore:")
+        )
+
+        # STAMPO I 5 ARCHI
+        #mi serve customer come oggetto per recuperare gli attributi nome, cognome e paese
+        #Enumero i 5 archi a partire da 1
+        for i,(c1, c2, w) in enumerate (top5,1):
+            self._view._txt_result.controls.append(
+                ft.Text(
+                    f"{i}.{c1.FirstName} {c1.LastName} ({c1.Country}) -> "
+                    f"{c2.FirstName} {c2.LastName} ({c2.Country}) " 
+                    f"(peso:{w['weight']})"
+                )
+            )
 
 
+        self._view.update_page()
     def handleSequenza(self,e):
         pass
